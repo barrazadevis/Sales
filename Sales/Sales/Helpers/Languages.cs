@@ -23,6 +23,27 @@
 
 		public static string TurnOnInternet => Resource.TurnOnInternet;
 
+		public static string AddProduct => Resource.AddProduct;
+
+		public static string Description => Resource.Description;
+
+		public static string DescriptionPlaceHolder => Resource.DescriptionPlaceHolder;
+
+		public static string Price => Resource.Price;
+
+		public static string PricePlaceHolder => Resource.PricePlaceHolder;
+
+		public static string Remarks => Resource.Remarks;
+
+		public static string Save => Resource.Save;
+
+		public static string ChangeImage => Resource.ChangeImage;
+		public static string DescriptionError => Resource.DescriptionError;
+		public static string PriceError => Resource.PriceError;
+		public static string ImageSource => Resource.ImageSource;
+		public static string FromGallery => Resource.FromGallery;
+		public static string NewPicture => Resource.NewPicture;
+		public static string Cancel => Resource.Cancel;
 		//public static string EmailMessage => Resource.EmailMessage;
 	}
 
