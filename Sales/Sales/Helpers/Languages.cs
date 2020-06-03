@@ -54,6 +54,23 @@
 		public static string EditProduct => Resource.EditProduct;
 		public static string IsAvailable => Resource.IsAvailable;
 
+		public static string EdiSearcht => Resource.Search;
+		public static string About => Resource.About;
+		public static string Email => Resource.Email;
+		public static string YeEmailPlaceHolders => Resource.EmailPlaceHolder;
+		public static string EmailValidation => Resource.EmailValidation;
+		public static string Exit => Resource.Exit;
+		public static string Forgot => Resource.Forgot;
+		public static string Login => Resource.Login;
+
+		public static string Menu => Resource.Menu;
+		public static string Password => Resource.Password;
+		public static string PasswordPlaceHolder => Resource.PasswordPlaceHolder;
+		public static string PasswordValidation => Resource.PasswordValidation;
+		public static string Register => Resource.Register;
+		public static string Rememberme => Resource.Rememberme;
+		public static string Setup => Resource.Setup;
+		public static string SomethingWrong => Resource.SomethingWrong;
 
 
 		//public static string EmailMessage => Resource.EmailMessage;
