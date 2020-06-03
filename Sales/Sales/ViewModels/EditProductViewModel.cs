@@ -9,6 +9,7 @@
     using Plugin.Media;
     using Sales.Helpers;
     using System.Linq;
+    using System;
 
     public class EditProductViewModel : BaseViewModel
     {
@@ -64,13 +65,59 @@
 
         #region Commands
 
-        public ICommand ChangeImageCommand
+        public ICommand DeleteCommand => new RelayCommand(Delete);
+
+        private async void Delete()
         {
-            get
+            var answer = await App.Current.MainPage.DisplayAlert(
+                Languages.Confirm,
+                Languages.DeleteConfirmation,
+                Languages.Yes,
+                Languages.No);
+            if (!answer)
             {
-                return new RelayCommand(ChangeImage);
+                return;
             }
+
+            this.IsRunning = true;
+            this.IsEnabled = false;
+
+            var connection = await this.apiService.CheckConnection();
+            if (!connection.IsSuccess)
+            {
+                this.IsRunning = false;
+                this.IsEnabled = true;
+                await App.Current.MainPage.DisplayAlert(Languages.Error, connection.Message, Languages.Accept);
+                return;
+            }
+
+
+            var url = App.Current.Resources["UrlAPI"].ToString();
+            var prefix = App.Current.Resources["UrlPrefix"].ToString();
+            var controller = App.Current.Resources["UrlProductsController"].ToString();
+            var response = await this.apiService.Delete<Product>(url, prefix, controller, this.Product.ProductId);
+            if (!response.IsSuccess)
+            {
+                await App.Current.MainPage.DisplayAlert(Languages.Error, response.Message, Languages.Accept);
+                return;
+            }
+
+
+            var productsViewModel = ProductsViewModel.GetInstance();
+            var deleteProduct = productsViewModel.MyProducts.Where(p => p.ProductId == this.Product.ProductId).FirstOrDefault();
+            if (deleteProduct != null)
+            {
+                productsViewModel.MyProducts.Remove(deleteProduct);
+            }
+
+            productsViewModel.RefreshList();
+
+            this.IsRunning = false;
+            this.IsEnabled = true;
+            await App.Current.MainPage.Navigation.PopAsync();
         }
+
+        public ICommand ChangeImageCommand => new RelayCommand(ChangeImage);
 
         private async void ChangeImage()
         {
@@ -116,13 +163,7 @@
         }
 
 
-        public ICommand SaveCommand
-        {
-            get
-            {
-                return new RelayCommand(Save);
-            }
-        }
+        public ICommand SaveCommand => new RelayCommand(Save);
 
         private async void Save()
         {
