@@ -44,6 +44,18 @@
 		public static string FromGallery => Resource.FromGallery;
 		public static string NewPicture => Resource.NewPicture;
 		public static string Cancel => Resource.Cancel;
+
+		public static string Edit => Resource.Edit;
+		public static string Delete => Resource.Delete;
+		public static string DeleteConfirmation => Resource.DeleteConfirmation;
+		public static string Yes => Resource.Yes;
+		public static string No => Resource.No;
+		public static string Confirm => Resource.Confirm;
+		public static string EditProduct => Resource.EditProduct;
+		public static string IsAvailable => Resource.IsAvailable;
+
+
+
 		//public static string EmailMessage => Resource.EmailMessage;
 	}
 

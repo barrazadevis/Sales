@@ -1,7 +1,9 @@
 ﻿namespace Sales.ViewModels
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows.Input;
     using Common.Models;
     using GalaSoft.MvvmLight.Command;
@@ -15,11 +17,13 @@
 
         private bool isRefreshing;
 
-        private ObservableCollection<Product> products;
+        private ObservableCollection<ProductItemViewModel> products;
         #endregion
 
-        #region Methods
-        public ObservableCollection<Product> Products
+        #region Properties
+
+        public List<Product> MyProducts { get; set; }
+        public ObservableCollection<ProductItemViewModel> Products
         {
             get { return this.products; }
             set { this.SetValue(ref this.products, value); }
@@ -31,6 +35,9 @@
             set { this.SetValue(ref this.isRefreshing, value); }
         }
 
+        #endregion
+
+        #region Methods
         private async void LoadProducts()
         {
             this.IsRefreshing = true;
@@ -54,9 +61,29 @@
                 return;
             }
 
-            var list = (List<Product>)response.Result;
-            this.Products = new ObservableCollection<Product>(list);
+            this.MyProducts = (List<Product>)response.Result;
+            this.RefreshList();
             this.IsRefreshing = false;
+
+
+        }
+
+        public void RefreshList()
+        {
+            var myListProductItemViewModel = MyProducts.Select(p => new ProductItemViewModel
+            {
+                Description = p.Description,
+                ImageArray = p.ImageArray,
+                ImagePath = p.ImagePath,
+                IsAvailable = p.IsAvailable,
+                Price = p.Price,
+                ProductId = p.ProductId,
+                PublishOn = p.PublishOn,
+                Remarks = p.Remarks
+            });
+
+            this.Products = new ObservableCollection<ProductItemViewModel>(
+                myListProductItemViewModel.OrderBy(p => p.Description));
         }
 
         #endregion
