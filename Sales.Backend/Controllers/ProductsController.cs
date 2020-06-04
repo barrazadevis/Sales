@@ -11,6 +11,7 @@
     using System;
     using System.ComponentModel;
 
+    [Authorize]
     public class ProductsController : Controller
     {
         private LocalDataContext db = new LocalDataContext();

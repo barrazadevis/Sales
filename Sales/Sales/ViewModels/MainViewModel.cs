@@ -8,6 +8,8 @@
     {
 
         #region Properties
+
+        public LoginViewModel Login { get; set; }
         public EditProductViewModel EditProduct { get; set; }
         public ProductsViewModel Products { get; set; }
         public AddProductViewModel AddProduct { get; set; }
@@ -17,7 +19,6 @@
         public MainViewModel()
         {
             instance = this;
-            this.Products = new ProductsViewModel();
         }
         #endregion
 
