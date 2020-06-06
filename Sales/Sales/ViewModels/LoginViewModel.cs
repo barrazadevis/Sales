@@ -5,7 +5,7 @@
     using Helpers;
     using Sales.Views;
     using Services;
-    class LoginViewModel : BaseViewModel
+    public class LoginViewModel : BaseViewModel
     {
         #region Atrributes
         private ApiService apiService;
@@ -95,8 +95,7 @@
             Settings.IsRemembered = this.IsRemembered;
 
             MainViewModel.GetInstance().Products = new ProductsViewModel();
-            App.Current.MainPage = new ProductsPage();
-
+            App.Current.MainPage = new MasterPage();
             this.IsRunning = false;
             this.IsEnabled = true;
 

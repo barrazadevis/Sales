@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows.Input;
     using Common.Models;
     using GalaSoft.MvvmLight.Command;
@@ -16,6 +17,7 @@
         private string filter;
 
         private ApiService apiService;
+        private DataService dataService;
 
         private bool isRefreshing;
 
@@ -54,27 +56,54 @@
             var connection = await this.apiService.CheckConnection();
             if (!connection.IsSuccess)
             {
+                var answer = await this.LoadProductsFromAPI();
+                if (answer)
+                {
+                    this.SaveProductsToDB();
+                }
+                
+            }
+            else
+            {
+                await this.LoadProductsFromDB();
+            }
+
+            if (this.MyProducts == null || this.MyProducts.Count == 0)
+            {
                 this.IsRefreshing = false;
-                await App.Current.MainPage.DisplayAlert(Languages.Error, connection.Message, Languages.Accept);
+                await App.Current.MainPage.DisplayAlert(Languages.Error, Languages.NoProductsMessage, Languages.Accept);
                 return;
             }
 
+            this.RefreshList();
+            this.IsRefreshing = false;
+            
+        }
+
+        private async Task LoadProductsFromDB()
+        {
+            this.MyProducts = await this.dataService.GetAllProducts();
+        }
+
+        private async Task SaveProductsToDB()
+        {
+            await this.dataService.DeleteAllProducts();
+            this.dataService.Insert(this.MyProducts);
+        }
+
+        private async Task<bool> LoadProductsFromAPI()
+        {
             var url = App.Current.Resources["UrlAPI"].ToString();
             var prefix = App.Current.Resources["UrlPrefix"].ToString();
             var controller = App.Current.Resources["UrlProductsController"].ToString();
             var response = await this.apiService.GetList<Product>(url, prefix, controller, Settings.TokenType, Settings.AccessToken);
             if (!response.IsSuccess)
             {
-                this.IsRefreshing = false;
-                await App.Current.MainPage.DisplayAlert(Languages.Error, response.Message, Languages.Accept);
-                return;
+                return false;
             }
 
             this.MyProducts = (List<Product>)response.Result;
-            this.RefreshList();
-            this.IsRefreshing = false;
-
-
+            return true;
         }
 
         public void RefreshList()
@@ -122,6 +151,7 @@
         public ProductsViewModel()
         {
             this.apiService = new ApiService();
+            this.dataService = new DataService();
             this.LoadProducts();
         }
         #endregion
