@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:i18n="clr-namespace:Sales.Helpers"
              mc:Ignorable="d"
@@ -12,9 +13,19 @@
     <ContentPage.Content>
         <StackLayout
             Padding="5">
-            <Image
-                Source="sales">
-            </Image>
+            <controls:CircleImage
+                Source="{Binding UserImageFullPath}"
+                Aspect="AspectFill"
+                WidthRequest="200"
+                HeightRequest="200">
+            </controls:CircleImage>
+            <Label
+                FontAttributes="Bold"
+                FontSize="Large"
+                HorizontalOptions="Center"
+                Text="{Binding UserFullName}"
+                TextColor="Wheat">
+            </Label>
             <ListView
                 BackgroundColor="Transparent"
                 ItemsSource="{Binding Menu}"

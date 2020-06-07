@@ -4,6 +4,7 @@
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
     using Helpers;
+    using Sales.Common.Models;
     using Views;
     using ViewsModels;
     using Xamarin.Forms;
@@ -15,8 +16,32 @@
         public EditProductViewModel EditProduct { get; set; }
         public ProductsViewModel Products { get; set; }
         public AddProductViewModel AddProduct { get; set; }
-
+        public RegisterViewModel Register { get; set; }
+        public MyUserASP UserASP { get; set; }
         public ObservableCollection<MenuItemViewModel> Menu { get; set; }
+
+        public string UserImageFullPath
+        {
+            get
+            {
+                if (this.UserASP != null && this.UserASP.Claims != null && this.UserASP.Claims.Count > 3)
+                {
+                    return $"https://salesapiservice.azurewebsites.net{this.UserASP.Claims[3].ClaimValue.Substring(1)}";
+                }
+                return null;
+            }
+        }
+        public string UserFullName 
+        {
+            get
+            {
+                if (this.UserASP != null && this.UserASP.Claims != null && this.UserASP.Claims.Count > 1)
+                {
+                    return $"{this.UserASP.Claims[0].ClaimValue} {this.UserASP.Claims[1].ClaimValue}";
+                }
+                return null;
+            }
+        }
         #endregion
 
         #region Constructors
